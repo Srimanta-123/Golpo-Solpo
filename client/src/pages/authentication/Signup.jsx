@@ -11,6 +11,35 @@ import { Link } from "react-router-dom";
 
 
 const Signup = () => {
+
+
+// const [signupData , setsignupData] = useState({ username : "" , email : "" , password : "" , confirmPassword : ""});
+
+// function handleChange(e){ 
+//   //console.log(e.target.name);
+
+//   setsignupData((prev) => 
+//     ({...prev,
+//     [e.target.name]: e.target.value})); 
+      
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -50,7 +79,8 @@ const Signup = () => {
                   name="username"
                   className="grow text-sm"
                   placeholder="Choose a username"
-                  // add: value={} onChange={}
+                  value={signupData.username}
+                  onChange={handleChange}
                 />
               </label>
             </div>
@@ -68,7 +98,8 @@ const Signup = () => {
                   name="email"
                   className="grow text-sm"
                   placeholder="Enter your email"
-                  // add: value={} onChange={}
+                  value={signupData.email}
+                  onChange={handleChange}
                 />
               </label>
             </div>
@@ -85,7 +116,8 @@ const Signup = () => {
                   name="password"
                   className="grow text-sm"
                   placeholder="••••••••"
-                  // add: value={} onChange={}
+                  value={signupData.password}
+                  onChange={handleChange}
                 />
                 {/* EYE TOGGLE — remove button to disable show/hide */}
                 <button
@@ -110,7 +142,8 @@ const Signup = () => {
                   name="confirmPassword"
                   className="grow text-sm"
                   placeholder="••••••••"
-                  // add: value={} onChange={}
+                  value={signupData.confirmPassword}
+                  onChange={handleChange}
                 />
                 {/* EYE TOGGLE — remove button to disable show/hide */}
                 <button

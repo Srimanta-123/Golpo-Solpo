@@ -10,9 +10,33 @@ import { Link } from "react-router-dom";
 
 
 
-
 const Login = () => {
-  const [showPass, setShowPass] = useState(false);
+
+
+
+
+  
+// const [loginData , setloginData] = useState({ username : "" , password : ""});
+
+
+// function handleChange(e){ 
+//   //console.log(e.target.name);
+
+
+//   setloginData((prev) => 
+//     ({...prev,
+//     [e.target.name]: e.target.value}));
+
+// };
+
+//console.log(loginData);
+
+
+
+
+
+
+  const [showPass, setShowPass] = useState(false);   // for password show/hide toggle
 
   return (
     // PAGE WRAPPER — change bg-base-300 to change page background
@@ -38,6 +62,8 @@ const Login = () => {
 
           <div className="flex flex-col gap-4">
 
+
+
             {/* USERNAME INPUT — add value, onChange, name here */}
             <div className="flex flex-col gap-1">
               <label className="text-xs font-semibold uppercase tracking-widest text-base-content/50">
@@ -52,9 +78,14 @@ const Login = () => {
                   className="grow text-sm"
                   placeholder="Enter your username"
                   // add: value={} onChange={}
+                  value={loginData.username}  
+                  onChange={handleChange}
                 />
               </label>
             </div>
+
+
+
 
             {/* PASSWORD INPUT — add value, onChange here */}
             <div className="flex flex-col gap-1">
@@ -67,6 +98,7 @@ const Login = () => {
                   Forgot password?
                 </button>
               </div>
+
               <label className="input input-bordered focus-within:input-primary flex items-center gap-3">
                 {/* icon — swap IoKeySharp with any react-icon */}
                 <IoKeySharp className="text-base-content/40 shrink-0" size={15} />
@@ -76,7 +108,10 @@ const Login = () => {
                   className="grow text-sm"
                   placeholder="••••••••"
                   // add: value={} onChange={}
+                  value={loginData.password}
+                  onChange={handleChange}
                 />
+
                 {/* EYE TOGGLE — remove button to disable show/hide */}
                 <button
                   type="button"
@@ -87,6 +122,10 @@ const Login = () => {
                 </button>
               </label>
             </div>
+
+
+
+
 
           </div>
 
@@ -125,6 +164,6 @@ const Login = () => {
       </div>
     </div>
   );
-};
+ };
 
 export default Login;
