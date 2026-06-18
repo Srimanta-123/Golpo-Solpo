@@ -1,14 +1,18 @@
 import dotenv from 'dotenv';
 dotenv.config();
-
 import express from 'express';
 import { connectDB } from './db/connection1.db.js';
+import cookieParser from 'cookie-parser';
+
+
 
 connectDB();
+
 
 const app = express();
 
 app.use(express.json()); // PURSE JSON DATA IN REQUEST BODY
+app.use(cookieParser());
 
 const PORT = process.env.PORT || 5000;
 
@@ -17,7 +21,12 @@ const PORT = process.env.PORT || 5000;
 // routes
 
 import userRoutes from './routes/user.route.js';
+import messageRoute from './routes/message.route.js';
+
+app.use('/api/v1/message', messageRoute);
 app.use('/api/v1/users', userRoutes);
+
+
 
 // middlwares
 import { errorMiddleware } from './middlewares/error.middlware.js';
