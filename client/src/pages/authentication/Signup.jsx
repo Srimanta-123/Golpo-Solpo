@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import { FaUser, FaGithub } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { IoKeySharp, IoEyeOutline, IoEyeOffOutline, IoMailOutline } from "react-icons/io5";
-import { FcGoogle } from "react-icons/fc";
 
 import { Link } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { registerUserThunk } from "../../store/slice/user/user.thunk";
 
 
 
@@ -13,35 +16,83 @@ import { Link } from "react-router-dom";
 const Signup = () => {
 
 
-// const [signupData , setsignupData] = useState({ username : "" , email : "" , password : "" , confirmPassword : ""});
+  // Hooks for navigation, dispatching actions, and accessing authentication state
 
-// function handleChange(e){ 
-//   //console.log(e.target.name);
-
-//   setsignupData((prev) => 
-//     ({...prev,
-//     [e.target.name]: e.target.value})); 
-      
-// };
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.userReducer);
 
 
 
 
 
+  // State to hold signup form data
+
+  const [signupData, setSignupData] = useState({
+    fullName: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+    gender: "male",
+  });
+
+
+  // Redirect to home page if user is already authenticated
+
+  // useEffect(() => {
+  //   if (isAuthenticated) navigate("/");
+  // }, [isAuthenticated]);
 
 
 
 
 
+  // Function to handle input changes in the signup form
+
+  const handleInputChange = (e) => {
+    setSignupData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
 
 
 
 
+  // Function to handle signup form submission
 
+  const handleSignup = async () => {
+    if (signupData.password !== signupData.confirmPassword) {
+      return toast.error("Password and confirm password do not match");
+    }
+
+    const response = await dispatch(registerUserThunk(signupData));
+
+    console.log(response);
+
+    if (registerUserThunk.fulfilled.match(response)) {
+      navigate("/");
+    }
+
+    // if (response?.payload?.success) {
+    //   navigate("/");
+    // }
+  };
+
+
+
+
+  // State to toggle password visibility
 
   const [showPass, setShowPass] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(true);
+
+
+
+
+
+  // JSX for the signup page
 
   return (
     // PAGE WRAPPER — change bg-base-300 to change page background
@@ -67,11 +118,30 @@ const Signup = () => {
 
           <div className="flex flex-col gap-4">
 
+
+           {/* FULLNAME INPUT — add value, onChange here */}
+            <div className="flex flex-col gap-1">
+              {/* <label className="text-xs font-semibold uppercase tracking-widest text-base-content/50">
+                fullname
+              </label> */}
+              <label className="input input-bordered focus-within:input-primary flex items-center gap-3">
+                <FaUser className="text-base-content/40 shrink-0" size={13} />
+                <input
+                  type="text"
+                  name="fullName"
+                  className="grow text-sm"
+                  placeholder="Choose a Fullname"
+                  value={signupData.fullName}
+                  onChange={handleInputChange}
+                />
+              </label>
+            </div>
+
             {/* USERNAME INPUT — add value, onChange here */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold uppercase tracking-widest text-base-content/50">
+              {/* <label className="text-xs font-semibold uppercase tracking-widest text-base-content/50">
                 Username
-              </label>
+              </label> */}
               <label className="input input-bordered focus-within:input-primary flex items-center gap-3">
                 <FaUser className="text-base-content/40 shrink-0" size={13} />
                 <input
@@ -80,44 +150,25 @@ const Signup = () => {
                   className="grow text-sm"
                   placeholder="Choose a username"
                   value={signupData.username}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />
               </label>
             </div>
 
-            {/* EMAIL INPUT — add value, onChange here */}
-            <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold uppercase tracking-widest text-base-content/50">
-                Email
-              </label>
-              <label className="input input-bordered focus-within:input-primary flex items-center gap-3">
-                {/* icon — swap IoMailOutline with any react-icon */}
-                <IoMailOutline className="text-base-content/40 shrink-0" size={15} />
-                <input
-                  type="email"
-                  name="email"
-                  className="grow text-sm"
-                  placeholder="Enter your email"
-                  value={signupData.email}
-                  onChange={handleChange}
-                />
-              </label>
-            </div>
+            
 
             {/* PASSWORD INPUT — add value, onChange here */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold uppercase tracking-widest text-base-content/50">
-                Password
-              </label>
+
               <label className="input input-bordered focus-within:input-primary flex items-center gap-3">
                 <IoKeySharp className="text-base-content/40 shrink-0" size={15} />
                 <input
                   type={showPass ? "text" : "password"}
                   name="password"
                   className="grow text-sm"
-                  placeholder="••••••••"
+                  placeholder="Password"
                   value={signupData.password}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />
                 {/* EYE TOGGLE — remove button to disable show/hide */}
                 <button
@@ -132,18 +183,16 @@ const Signup = () => {
 
             {/* CONFIRM PASSWORD INPUT — add value, onChange here */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold uppercase tracking-widest text-base-content/50">
-                Confirm Password
-              </label>
+
               <label className="input input-bordered focus-within:input-primary flex items-center gap-3">
                 <IoKeySharp className="text-base-content/40 shrink-0" size={15} />
                 <input
                   type={showConfirm ? "text" : "password"}
                   name="confirmPassword"
                   className="grow text-sm"
-                  placeholder="••••••••"
+                  placeholder="Confirm Password"
                   value={signupData.confirmPassword}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />
                 {/* EYE TOGGLE — remove button to disable show/hide */}
                 <button
@@ -156,12 +205,48 @@ const Signup = () => {
               </label>
             </div>
 
+
+            {/* GENDER */}
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold uppercase tracking-widest text-base-content/50">
+                Gender
+              </label>
+
+              <div className="flex gap-4">
+
+                <label className="label cursor-pointer gap-2">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    checked={signupData.gender === "male"}
+                    onChange={handleInputChange}
+                    className="radio radio-primary"
+                  />
+                  <span>Male</span>
+                </label>
+
+                <label className="label cursor-pointer gap-2">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    checked={signupData.gender === "female"}
+                    onChange={handleInputChange}
+                    className="radio radio-primary"
+                  />
+                  <span>Female</span>
+                </label>
+
+              </div>
+            </div>
+
           </div>
 
           {/* SUBMIT BUTTON — add onClick handler here, change btn-primary for color */}
           <button
             className="btn btn-primary w-full rounded-xl font-semibold tracking-wide"
-            // add: onClick={} disabled={}
+            onClick={handleSignup}
           >
             Create account
           </button>

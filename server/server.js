@@ -3,7 +3,7 @@ dotenv.config();
 import express from 'express';
 import { connectDB } from './db/connection1.db.js';
 import cookieParser from 'cookie-parser';
-
+import cors from 'cors';
 
 
 connectDB();
@@ -13,6 +13,16 @@ const app = express();
 
 app.use(express.json()); // PURSE JSON DATA IN REQUEST BODY
 app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: [process.env.CLIENT_URL],
+    credentials: true,
+  })
+);
+
+
+
 
 const PORT = process.env.PORT || 5000;
 
@@ -24,7 +34,7 @@ import userRoutes from './routes/user.route.js';
 import messageRoute from './routes/message.route.js';
 
 app.use('/api/v1/message', messageRoute);
-app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/user', userRoutes);
 
 
 

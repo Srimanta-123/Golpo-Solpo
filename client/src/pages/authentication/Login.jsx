@@ -5,38 +5,60 @@ import { IoKeySharp, IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 
 import { Link } from "react-router-dom";
-
+import {toast} from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { loginUserThunk } from "../../store/slice/user/user.thunk";
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 
 
 
 const Login = () => {
-
-
-
-
   
-// const [loginData , setloginData] = useState({ username : "" , password : ""});
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { isAuthenticated } = useSelector((state) => state.userReducer);
 
 
-// function handleChange(e){ 
-//   //console.log(e.target.name);
+  const [loginData, setloginData] = useState({ 
+    username: "", 
+    password: "" 
+  });
 
 
-//   setloginData((prev) => 
-//     ({...prev,
-//     [e.target.name]: e.target.value}));
-
-// };
-
-//console.log(loginData);
+  useEffect(() => {
+    if (isAuthenticated) navigate("/");
+  }, [isAuthenticated]);
 
 
+  const handleInputChange = (e) => {
+    setloginData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
+  //console.log(loginData);
+
+
+
+
+   const handleLogin = async () => {
+    const response = await dispatch(loginUserThunk(loginData));
+    if (response?.payload?.success) {
+      navigate("/");
+    }
+  };
 
 
 
   const [showPass, setShowPass] = useState(false);   // for password show/hide toggle
+
+
+
 
   return (
     // PAGE WRAPPER — change bg-base-300 to change page background
@@ -78,8 +100,8 @@ const Login = () => {
                   className="grow text-sm"
                   placeholder="Enter your username"
                   // add: value={} onChange={}
-                  value={loginData.username}  
-                  onChange={handleChange}
+                  value={loginData.username}
+                  onChange={handleInputChange}
                 />
               </label>
             </div>
@@ -109,7 +131,7 @@ const Login = () => {
                   placeholder="••••••••"
                   // add: value={} onChange={}
                   value={loginData.password}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />
 
                 {/* EYE TOGGLE — remove button to disable show/hide */}
@@ -133,6 +155,7 @@ const Login = () => {
           <button
             className="btn btn-primary w-full rounded-xl font-semibold tracking-wide"
             // add: onClick={} disabled={}
+            onClick={handleLogin}
           >
             Sign in
           </button>
@@ -155,7 +178,7 @@ const Login = () => {
           {/* SIGNUP LINK — change /signup to your route */}
           <p className="text-center text-sm text-base-content/50">
             Don't have an account?  {" "}
-            <Link to="/signup" className="text-primary font-medium hover:underline"> 
+            <Link to="/signup" className="text-primary font-medium hover:underline">
               Sign up
             </Link>
           </p>
@@ -164,6 +187,6 @@ const Login = () => {
       </div>
     </div>
   );
- };
+};
 
 export default Login;
