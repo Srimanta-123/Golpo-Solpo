@@ -1,15 +1,24 @@
+
 import dotenv from 'dotenv';
 dotenv.config();
-import express from 'express';
-import { connectDB } from './db/connection1.db.js';
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
+
+import { app, server } from "./socket/socket.js";
+import express from "express";
+import { connectDB } from "./db/connection1.db.js";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+
 
 
 connectDB();
 
 
-const app = express();
+
+
+//const app = express();
+
+
+
 
 app.use(express.json()); // PURSE JSON DATA IN REQUEST BODY
 app.use(cookieParser());
@@ -52,6 +61,6 @@ app.get('/', (req, res) => {
 });
 
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
