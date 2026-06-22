@@ -27,6 +27,12 @@ const SendMessage = () => {
         className="input input-bordered input-primary w-full"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSendMessage();
+          }
+        }}
       />
       <button
         onClick={handleSendMessage}

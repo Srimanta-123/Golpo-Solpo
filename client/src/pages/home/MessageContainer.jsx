@@ -4,10 +4,30 @@ import Message from "./Message";
 import { useDispatch, useSelector } from "react-redux";
 import { getMessageThunk } from "../../store/slice/message/message.thunk";
 import SendMessage from "./SendMessage";
+import { setSelectedUser } from "../../store/slice/user/user.slice";
+
 
 const MessageContainer = () => {
 
   const dispatch = useDispatch();
+
+
+  // when user presses ESC → close chat area + remove selected user
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") {
+        dispatch(setSelectedUser(null));
+      }
+    };
+
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, []);
+
+
   const { selectedUser } = useSelector((state) => state.userReducer);
   const { messages } = useSelector((state) => state.messageReducer);
 
@@ -23,7 +43,7 @@ const MessageContainer = () => {
         <div className="w-full flex items-center justify-center flex-col gap-5">
           <h2>Welcome to GUP SHUP</h2>
           <p className="text-xl">Please select a person to continue your chat!!</p>
-          </div>
+        </div>
       ) : (
         <div className="h-screen w-full flex flex-col">
           <div className="p-3 border-b border-b-white/10">

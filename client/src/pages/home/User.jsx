@@ -17,11 +17,10 @@ const User = ({ userDetails }) => {
   return (
     <div
       onClick={handleUserClick}
-      className={`flex gap-5 items-center hover:bg-gray-700 rounded-lg py-1 px-2 cursor-pointer ${
-        userDetails?._id === selectedUser?._id && "bg-gray-700"
-      }`}
+      className={`flex gap-5 items-center hover:bg-gray-700 rounded-lg py-1 px-2 cursor-pointer ${userDetails?._id === selectedUser?._id && "bg-gray-700"
+        }`}
     >
-        <div className="avatar" >          {/* <div className={`avatar ${isUserOnline && 'online'}`}> */}
+      <div className="avatar" >          {/* <div className={`avatar ${isUserOnline && 'online'}`}> */}
         <div className="w-12 rounded-full">
           <img src={userDetails?.avatar} />
         </div>
@@ -29,8 +28,8 @@ const User = ({ userDetails }) => {
 
 
       <div>
-        <h2 className="line-clamp-1">{userDetails?.fullName}</h2>
-        <p className="text-xs">{userDetails?.username}</p>
+        <h2 className="font-semibold text-base">{userDetails?.fullName}</h2>
+        <p className="text-sm font-semibold text-gray-400">{userDetails?.username}</p>
       </div>
     </div>
   );

@@ -30,14 +30,11 @@ const UserSidebar = () => {
       setUsers(otherUsers);
     } else {
       setUsers(
-        otherUsers.filter((user) => {
-          return (
-            user.username.toLowerCase().includes(searchValue.toLowerCase()) ||
-            user.fullName
-              .toLowerCase()
-              .includes(searchValue.toLocaleLowerCase())
-          );
-        })
+        otherUsers.filter((user) =>
+          user.username
+            ?.toLowerCase()
+            .includes(searchValue.toLowerCase())
+        )
       );
     }
   }, [searchValue, otherUsers]);
@@ -81,7 +78,7 @@ const UserSidebar = () => {
           <div className="avatar">
             <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2">
               <img src={userProfile?.avatar} />
-            
+
             </div>
           </div>
           <h2>{userProfile?.username}</h2>

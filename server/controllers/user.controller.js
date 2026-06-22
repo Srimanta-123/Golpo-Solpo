@@ -25,8 +25,9 @@ export const register = asyncHandler(async (req, res, next) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-const avatarType = gender === "male" ? "boy" : "girl";
-  const avatar = `https://avatar.iran.liara.run/public/${avatarType}?username=${username}`;
+  const avatarType = gender === "male" ? "boy" : "girl";
+  const avatar = `https://api.dicebear.com/10.x/micah/svg?seed=${username}`;
+
 
   const newUser = await User.create({
     username,
