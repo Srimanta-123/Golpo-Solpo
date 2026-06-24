@@ -25,7 +25,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL],
+    origin: [process.env.CLIENT_URL,process.env.NETLIFY_URL,"https://golpo-solpo.netlify.app/login"],
     credentials: true,
   })
 );
