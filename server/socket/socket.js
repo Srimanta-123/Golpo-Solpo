@@ -9,9 +9,16 @@ const app = express();
 
 const server = http.createServer(app);
 
+// const io = new Server(server, {
+//   cors: {
+//     origin: process.env.CLIENT_URL,
+//   },
+// });
+
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL,
+    origin: [process.env.CLIENT_URL, process.env.NETLIFY_URL, "https://golpo-solpo.netlify.app"].filter(Boolean),
+    credentials: true,
   },
 });
 
