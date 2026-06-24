@@ -3,8 +3,8 @@ import { errorHandler } from "../utilities/errorHandler.utility.js";
 import jwt from 'jsonwebtoken'
 
 export const isAuthenticated = asyncHandler(async (req, res, next) => {
-    console.log(req.cookies)
-console.log(req.headers.authorization)
+//     console.log(req.cookies)
+// console.log(req.headers.authorization)
 
     const token = req.cookies.token || req.headers['authorization']?.replace("Bearer ","");
     if(!token){
